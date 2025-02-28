@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- PROJECT -->
+        <record model="ir.module.category" id="module_category_central_group_project">
+            <field name="name">Central Group Project</field>
+            <field name="sequence">110</field>
+        </record>
+
+        <record id="group_project_approve_reject_tier_1" model="res.groups">
+            <field name="name">Approve and Reject Tier 1</field>
+            <field name="category_id" ref="module_category_central_group_project"/>
+        </record>
+
+        <record id="group_project_approve_reject_tier_2" model="res.groups">
+            <field name="name">Approve and Reject Tier 2</field>
+            <field name="category_id" ref="module_category_central_group_project"/>
+        </record>
+
+    </data>
+</odoo>

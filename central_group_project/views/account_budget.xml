@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="crossovered_budget_view_form_inherit" model="ir.ui.view">
+        <field name="name">crossovered.budget.view.form.inherit</field>
+        <field name="model">crossovered.budget</field>
+        <field name="inherit_id" ref="account_budget_oca.crossovered_budget_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='creating_user_id']" position="after">
+                <field name="project_id" attrs="{'readonly': 1}"/>
+                <field name="project_code" attrs="{'readonly': 1}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

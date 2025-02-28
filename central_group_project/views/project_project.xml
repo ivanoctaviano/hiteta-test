@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="project.open_view_project_all" model="ir.actions.act_window">
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="project.open_view_project_all_group_stage" model="ir.actions.act_window">
+        <field name="view_mode">tree,form,calendar,activity</field>
+    </record>
+
+    <record id="edit_project_inherit" model="ir.ui.view">
+        <field name="name">edit.project.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(project.project_share_wizard_action)d']" position="before">
+                <button name="button_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('invisible_confirm','=',True)]}"/>
+                <button name="button_approve_tier_1" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('invisible_approve_reject_tier_1','=',True)]}" groups="central_group_project.group_project_approve_reject_tier_1"/>
+                <button name="button_reject_tier_1" string="Reject" type="object" attrs="{'invisible': [('invisible_approve_reject_tier_1','=',True)]}" groups="central_group_project.group_project_approve_reject_tier_1"/>
+                <button name="button_approve_tier_2" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': [('invisible_approve_reject_tier_2','=',True)]}" groups="central_group_project.group_project_approve_reject_tier_2"/>
+                <button name="button_reject_tier_2" string="Reject" type="object" attrs="{'invisible': [('invisible_approve_reject_tier_2','=',True)]}" groups="central_group_project.group_project_approve_reject_tier_2"/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="attributes">
+                <attribute name="attrs">{'readonly': 1}</attribute>
+                <attribute name="options"></attribute>
+                <attribute name="domain">[('id','!=',invisible_stage_id)]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="attributes">
+                <attribute name="attrs">{'required': 1}</attribute>
+            </xpath>
+            <xpath expr="//div[@name='dates']" position="attributes">
+                 <attribute name="attrs">{'readonly': [('invisible_confirm','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//div[@name='dates']" position="after">
+                <field name="budget_id" attrs="{'readonly': 1}"/>
+                <field name="project_code" attrs="{'readonly': 1}"/>
+            </xpath>
+            <xpath expr="//page[@name='settings']/group[1]/group[1]/field[@name='analytic_account_id']" position="before">
+                <field name="budget_post_id" attrs="{'required': 1, 'readonly': [('invisible_confirm','=',True)]}"/>
+                <field name="invisible_stage_id" attrs="{'invisible': 1}"/>
+                <field name="invisible_confirm" attrs="{'invisible': 1}"/>
+                <field name="invisible_approve_reject_tier_1" attrs="{'invisible': 1}"/>
+                <field name="invisible_approve_reject_tier_2" attrs="{'invisible': 1}"/>
+            </xpath>
+            <xpath expr="//page[@name='settings']/group[1]/group[1]/field[@name='analytic_account_id']" position="attributes">
+                <attribute name="attrs">{'required': 1, 'readonly': [('invisible_confirm','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='settings']" position="after">
+                <page name="rab" string="RAB">
+                    <field name="line_ids" mode="tree,kanban" widget="section_and_note_one2many" context="{'default_display_type': False}" attrs="{'readonly': [('invisible_confirm','=',True)], 'required': [('invisible_confirm','=',False)]}">                        
+                        <tree string="RAB Lines" editable="bottom">
+                            <control>
+                                <create name="add_line_control" string="Add a line"/>
+                                <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                            </control>
+
+                            <field name="sequence" widget="handle" />
+                            <field name="display_type" invisible="1"/>
+                            <field name="name" widget="section_and_note_text" optional="show"/>
+                            <field name="quantity" attrs="{
+                                'required': [('display_type', '=', False)],
+                            }"/>
+                            <field name="product_uom" attrs="{
+                                'required': [('display_type', '=', False)],
+                            }"/>
+                            <field name="price_unit" attrs="{
+                                'required': [('display_type', '=', False)],
+                            }"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="price_subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
